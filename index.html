@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Mongoose Example</title>
+
+</head>
+<style>
+body {
+  font-size:1.2em;
+  width:80%;
+  font-family:sans-serif;
+}
+div {
+  margin:auto;
+  width:60%;
+}
+code {
+  display:inline;
+}
+.cShell {
+  background-color:yellow;
+}
+
+.cWebSite {
+  background-color:#eeeeee;
+  font-weight:bold;
+}
+
+.cCommand {
+  font-weight:bold;
+}
+.cNPM {
+  font-weight:bold;
+}
+.cWarning {
+  font-style:italic;
+}
+</style>
+<body>
+  <div>
+    <h3>Simple example of using Mongoose.</h3>
+    <p>This tutorial assumes you know JavaScript, and Node, and need to use
+      Mongo for some sort of database application. At the bottom you will find
+      further some useful links.  Please let me know if you discover errors,
+      ommissions or other improvements that can be made.</p>
+
+    <p class='cWarning'>Warning: the example code below must be run using Node.
+      It will not work if you create a web page
+      and include it as JavaScript using a &lt;script&gt; tag.</p>
+
+      <p>It is assumed you have Mongo installed and know how to use <span class="cNPM">npm</span>.</p>
+      <p>
+        If you have not installed Mongo, here is what to do: If you have a PC, buy a Mac then go to
+        <code class="cWebSite">brew.sh</code>. At the top of their site is a Ruby script that invokes
+        <code class="cCommand">curl</code>.  Next, copy this script, paste and run it in a Bash shell
+        and continue by using the shell commands below.</p>
+        <code class="cShell">/usr/bin/ruby -e "$(curl ...</code><br><br>
+        <code class="cShell">brew install mongodb</code>
+        <p>  Did you notice that little
+          "db" at the end of the command? It's important. Now run:</p>
+          <code class="cShell">mongod</code>
+          <p>Did you notice that "d" at the end of that command?  It's important too.</p>
+
+          <p>Mongo should be running.  If you don't know if Mongo is running, use this
+            Bash shell command: </p>
+            <code class="cShell">mongo</code>
+            <p>Did you notice this command did
+              <i>not</i> have a "d" or a "db" suffix? </p>
+              <p>Now your are ready to install
+                Mongoose from <span class='cNPM'>npm<span>.</p>
+                  <code class="cShell">npm install --save mongoose</code>
+                  <p>And finally, create test.js with this code:</p>
+                  <pre>
+  'use strict'
+
+  var mongoose = require("mongoose")
+
+  mongoose.connect(“mongodb://localhost/dbName”) // Default port is 27017
+
+  // Create a MODEL with simple schema
+  // This step is also known as Compiling a schema into a model
+  mongoose.model(“MyModelClass”, {name: String, birthday: Date})
+
+  // Create an INSTANCE of the model.
+  // Initial values are passed as an object.
+  // Notice the populated instance was returned and saved as "var modelInstance".
+  // The model class serves as a constructor when creating new instances
+  // of the model (which, in turn, will then be added to the collection of
+  // instances in the DB)
+  var modelInstance = new MyModelClass({name: “Todd", birthday:"11-11-11"})
+
+  // SAVE the instance (of model)
+  // i.e. add model to the "collection" which
+  // is an array with only one member (as of now)
+  modelInstance.save(function(err) {
+    if (err) {
+      console.log()
+    } else {
+      console.log()
+    }
+  })
+                  </pre>
+
+                  <p>Inside Mongo, there is now a <i>collection</i> which is an
+                    array of "ModelName" instances--each of which has this form:<br>
+                    <code>{name: xxx, birthday: Date }</code></p>
+
+                    <p>"ModelClass" is a poor choice of names.  For this case,
+                      it would have been better to use a descriptive
+                      name like "Person" or possibly "PersonModel".</p>
+                    <p>By convention, model names start in upper-case letters and
+                      <i>instances</i> of models are start with lower-case letters.</p>
+
+                    <p>By now, there may be some confusion or fuzziness as to what did (or did not) happen after running
+                    this code in Node.  First, let me remind you that Mongo (<code>mongod</code>) had to be running <em>before</em>
+                  executing the test code. </p>
+                  <b>Robomongo</b>
+                  <p>You will notice that the Node program did not show any
+                    signs of exiting (or even
+                completing its task).  So, next, I suggest you install Robomongo
+                to see what is going on inside the Mongo DB.
+              There are other ways to do this, but I have been told Robomongo is
+              the best-and I not spent any time trying to disprove this.</p>
+              <p>Robomongo is not perfect.  In fact, I have not found a way to
+                automatically refresh its view when new data comes in.
+              Also, if you happen to close the window, Robomongo goes away
+              altogether, because it is not being run like a normal desktop app.</p>
+              <p>Oh, and one other thing: there is no documentation provided with Robomongo.
+                Maybe that's because they only received 25% of their crowd-funding target?</p>
+<b>Reading from Mongo</b>
+<p>It turns out, you need a Model Class to read from a model (collection) in Mongo. You
+  might have noticed that creating an instance of a model returns a Model Class.
+  But what if you wanted to read data (without adding data just to get the Model Class?).
+To obtain a Model Class issue: <code>var myModelInstance = mongoose.model('SomeModel'</code>
+<p>So far we put something into Mongo, but it's now time to read back (query) what is inside.
+There are many ways to do this, but we will only discuss a couple of easy ones:</p>
+<p>First, there is the .find() method on the Model. When I say "Model" I mean the model class.
+Recall that to obtain a model this is used: var PeopleModel = new PeopleModel()
+</p>
+<hr>
+
+                    <footer>
+                      <ul>
+
+
+<li>For more information on Mongo see <a href='https://www.mongodb.org/'>Mongo Labs</a></li>
+<li>For more information on Mongoose see <a href='http://mongoosejs.com/docs/guide.html'>Mongoose Docs</a></li>
+<li>For downloading Robomongo, see <a href="https://robomongo.org/download">Robomongo downloads</a></li>
+</ul>
+                    </footer>
+                    </div>
+                  </body>
+
+                  </html>
